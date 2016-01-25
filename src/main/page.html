@@ -1,0 +1,384 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-XSS-Protection" content="1">
+<meta http-equiv="X-FRAME-OPTIONS" content="SAMEORIGIN">
+<!-- for Facebook -->    
+<meta property="og:title" content="praise : 네이버 영어사전" ></meta>
+<meta property="og:type" content="article" ></meta>
+<meta property="og:description" id="ogDescripFc" content="" ></meta>
+<meta property="og:image" content="http://dicimg.naver.net/endic/img/endic_icon.jpg" ></meta>
+<!-- for Twitter -->         
+<meta name="twitter:card" content="summary" ></meta>
+<meta name="twitter:title" content="praise : 네이버 영어사전" ></meta>
+<meta name="twitter:description" id="ogDescripTw" content="" ></meta>
+<meta name="twitter:image" content="http://dicimg.naver.net/endic/img/endic_icon.jpg" ></meta> 
+<link rel="shortcut icon" href="http://dicimg.naver.net/common/commonimg/Favicon_64X64.ico" type="image/x-icon"/>
+<title>praise :  네이버 영어사전</title>
+<link type="text/css" rel="stylesheet" href="http://dicimg.naver.net/endic/style/201512291730/css/common_font.css?20160104152240"/>
+<link type="text/css" rel="stylesheet" href="http://dicimg.naver.net/endic/style/201512291730/css/style_font.css?20160104152240"/>
+<link type="text/css" rel="stylesheet" href="http://dicimg.naver.net/endic/style/201512291730/css/entry_add.css?20160104152240"/>
+<link type="text/css" rel="stylesheet" href="http://dicimg.naver.net/endic/style/201512291730/css/style_category.css?20160104152240"/>
+<link type="text/css" rel="stylesheet" href="http://dicimg.naver.net/endic/style/201512291730/css/comment.css?20160104152240"/>
+
+<link rel="stylesheet" type="text/css" href="http://dicimg.naver.net/gnbcommon/style/dnb_latest2/css/gnb.css?2016011311">
+<script type="text/javascript" src="http://endic.naver.com/js/jquery-1.11.2.min.js?20160104152240"></script>
+<script type="text/javascript" src="http://endic.naver.com/js/jquery.scrollTo.min.js?20160104152240"></script>
+<script type="text/javascript" src="http://endic.naver.com/js/Common.org.js?20160104152240"></script>
+<script type="text/javascript" src="http://endic.naver.com/js/Search.org.js?20160104152240"></script>
+<script type="text/javascript" src="./clickcr.js"></script>
+<script type="text/javascript" language="javascript" src="http://static.naver.com/common/js/cs_ops_webncc.js"></script>
+<script type="text/javascript" >
+var isPad = false
+</script>
+<script type="text/javascript">
+//if (document.location.host.indexOf('naver.com') != -1)
+document.domain = "naver.com";
+//Global 변수 선언
+var windowType="big";
+var nsc = "endic.entry";
+//@descriptioin:deside the nsc and g_ssc value by version,to english version,both g_ssc and nsc + "_eng"
+var ccsrv="cc.naver.com";
+var nclk_evt = 3;
+
+// 이벤트 Listener 함수 호출
+nclk_do();
+var cssImgUrl = "http://dicimg.naver.net/endic/style/201512291730/img";
+var endic_sKin_lang = "kr"; 
+var endicUrl = "http://endic.naver.com";
+</script>
+
+<script type="text/javascript">
+	jindo.$Cookie().set("deleteExampleCookie", "true");
+	var	config_userId = "";
+	var entryIdForWB="EK_2c44f1a7ae0f47789c62d20dba9707f7"
+	var autoCompleteUrl="http://ac.endic.naver.com/ac";
+	var wordbookUrl="http://wordbook.naver.com";
+	var translateSiteUrl="http://translate.naver.com";
+	var translatePcSiteUrl="http://translate.naver.com";
+	function doChanged4DicType(){
+	 	var mutilEntriesDiv=document.getElementById('mutilEntries4DifferDicType');
+	 	if(mutilEntriesDiv==null){
+	 		var url= document.getElementById('transferedURL4DicType').value;
+	  		 window.location.href=url;
+	 	}
+	 	else {
+
+			var url="http://endic.naver.com/search.nhn?sLn=kr&query=praise&searchOption=all";
+			if ('N'=='Y') {
+				url=url+"&isOnlyViewEE=N";
+			} else {
+				url=url+"&isOnlyViewEE=Y";
+			}
+			window.location.href=url;
+	 	}
+	}
+	//2011.06.21 kwangpa88추가
+	function ShowHelp(s){
+		if (s == 'Y') 
+			document.getElementById("changelanguagehelp").style.display = 'block';
+		else document.getElementById("changelanguagehelp").style.display = 'none';
+	}
+	//2011.06.14 kwangpa88추가
+	function Kor2Eng(obj){
+		var URI="http://endic.naver.com/enkrEntry.nhn"
+			var queryString="sLn=kr&entryId=2c44f1a7ae0f47789c62d20dba9707f7&query=praise";
+			if ( queryString.indexOf("sLn=")>-1){
+				var ps = queryString.split("sLn=");
+				queryString = ps[0].trim() ;
+				if(ps[1].indexOf("&")>-1){
+					queryString += ps[1].substring(ps[1].indexOf("&")+1,ps[1].length);
+				}				
+				if(queryString.lastIndexOf("&")==(queryString.length-1)){
+					queryString = queryString.substring(0,queryString.length-1);
+				}
+			}
+			location.href = URI+"?sLn="+obj+"&"+queryString;
+			
+	}
+
+	jindo.$Fn(function() {
+			if(window.MTB) window.MTB.destroy();
+			window.MTB = new nhn.MachTransButtonCtrl({
+				url: ""
+			});
+			if(window.UTB) window.UTB.destroy();
+			window.UTB = new nhn.UserTransButtonCtrl({
+				url: ""
+			});
+		}).attach(document, "domready");
+
+   function goToRecentReviewWB(){
+
+		url=wordbookUrl+"/wordBookEntry.nhn?m=getRecentReviewedEntry&dicType=1";
+		location.href = url;
+
+   }
+
+	   jindo.$Fn( function() {
+	     if(config_userId!="" && $("save")!=null){
+	     	$("save").checked = false;
+	     	url = wordbookUrl+"/wordBookEntry.nhn";
+			var ajax = jindo.$Ajax(
+				url,
+				{
+					type :"endic.naver.com/jsonp",
+					onload : function(res) {
+						if(res.json().status=="0"){
+							return;
+						}else if(res.json().status=="-98"){
+							return;
+						}else if(res.json().status==undefined){
+							return;
+						}else{
+							var entryEditLink=wordbookUrl+res.json().entryEditLink;
+							if($("entry_wb_nm")) {
+							var inner = '<p class="desc"><a target="endicWordBook" href="';
+							inner += entryEditLink;
+							inner += '">‘';
+							inner += res.json().wordBookName;
+							inner += ' 단어장’</a>에 이미 추가된 단어입니다.</p>';
+							$("entry_wb_nm").innerHTML= inner;
+							}
+						}
+
+					}
+				}).request( {
+			sLn : 'kr',	
+			m :'getLastestEntryForEditByOriginEntryId',
+			originEntryID :entryIdForWB,
+			userId :config_userId,
+			dicType:1
+		});
+	    }
+	}).attach(document, "domready");
+</script>
+
+
+
+
+</head>
+<body onload="">
+<script type="text/javascript" src="endic.naver.com/js/Sub.org.js?20160104152240" ></script>
+<script type="text/javascript" src="/js/audioPlayer.js"></script>
+<script type="text/javascript" >
+var isPad = false
+</script>
+<div id="u_skip">
+	<a href="javascript:void(0);" onclick="skip_navigation('content');"><span>본문 영역으로 바로가기</span></a>
+	<a href="javascript:void(0);" onclick="skip_navigation('aside');"><span>사이드 영역으로 바로가기</span></a>
+</div>
+<div id="wrap">
+<script language="javascript" type="text/javascript">
+var timeId;
+function searchChange(obj){	
+	location.href = "search.nhn?sLn=kr&query=praise&searchOption="+obj.value;
+	
+}
+function searchEE2EKChange(obj){
+	var searchOptionStr="";
+	if(searchOptionStr=="example"){
+			var url="search_example.nhn?sLn=kr&query=praise&isOnlyViewEE="+obj.value;
+			jindo.$Cookie().set("deleteExampleCookie", "false");
+			location.href = url;
+	}else{
+		location.href = "search.nhn?sLn=kr&query=praise&searchOption="+searchOptionStr+"&isOnlyViewEE="+obj.value;
+	}
+}
+
+function mobileImgLayerSwitch(){
+	var mobileIntroLayer = document.getElementById("mobile_intro_layer");
+	if(mobileIntroLayer.style.display == "block"){
+		mobileIntroLayer.style.display =  "none";
+	} else {
+		mobileIntroLayer.style.display = "block";
+	}
+}
+
+function previewMobilePage(url){
+	var sw = screen.width;
+	var horizon_position = screen.width - 375;
+	window.open( url,"mobile","left="+horizon_position+", top=150, width=375, height=645, toolbar=no, scrollbars=no, status=no, resizable=no");
+}
+
+function blockChk(ascode) { var aa = "http://webmsg.naver.com/popup_send/send_url.php?code="+ascode+"&SMSID=ESW00017&MMSID=EMG00005"; window.open(aa,"pop_alert","toolbar=no,scrollbars=no ,width=285,height=402,top=100,left=100"); return; }
+</script>
+<div id="header">
+    <!-- 공통 GNB -->
+	<div id="dic_dnb_container"></div>
+	<script type="text/javascript">
+		LazyLoad=function(k){function p(b,a){var g=k.createElement(b),c;for(c in a)a.hasOwnProperty(c)&&g.setAttribute(c,a[c]);return g}function l(b){var a=m[b],c,f;if(a)c=a.callback,f=a.urls,f.shift(),h=0,f.length||(c&&c.call(a.context,a.obj),m[b]=null,n[b].length&&j(b))}function w(){var b=navigator.userAgent;c={async:k.createElement("script").async===!0};(c.webkit=/AppleWebKit\//.test(b))||(c.ie=/MSIE/.test(b))||(c.opera=/Opera/.test(b))||(c.gecko=/Gecko\//.test(b))||(c.unknown=!0)}function j(b,a,g,f,h){var j=
+		function(){l(b)},o=b==="css",q=[],d,i,e,r;c||w();if(a)if(a=typeof a==="string"?[a]:a.concat(),o||c.async||c.gecko||c.opera)n[b].push({urls:a,callback:g,obj:f,context:h});else{d=0;for(i=a.length;d<i;++d)n[b].push({urls:[a[d]],callback:d===i-1?g:null,obj:f,context:h})}if(!m[b]&&(r=m[b]=n[b].shift())){s||(s=k.head||k.getElementsByTagName("head")[0]);a=r.urls;d=0;for(i=a.length;d<i;++d)g=a[d],o?e=c.gecko?p("style"):p("link",{href:g,rel:"stylesheet"}):(e=p("script",{src:g}),e.async=!1),e.className="lazyload",
+		e.setAttribute("charset","utf-8"),c.ie&&!o?e.onreadystatechange=function(){if(/loaded|complete/.test(e.readyState))e.onreadystatechange=null,j()}:o&&(c.gecko||c.webkit)?c.webkit?(r.urls[d]=e.href,t()):(e.innerHTML='@import "'+g+'";',u(e)):e.onload=e.onerror=j,q.push(e);d=0;for(i=q.length;d<i;++d)s.appendChild(q[d])}}function u(b){var a;try{a=!!b.sheet.cssRules}catch(c){h+=1;h<200?setTimeout(function(){u(b)},50):a&&l("css");return}l("css")}function t(){var b=m.css,a;if(b){for(a=v.length;--a>=0;)if(v[a].href===
+		b.urls[0]){l("css");break}h+=1;b&&(h<200?setTimeout(t,50):l("css"))}}var c,s,m={},h=0,n={css:[],js:[]},v=k.styleSheets;return{css:function(b,a,c,f){j("css",b,a,c,f)},js:function(b,a,c,f){j("endic.naver.com/js",b,a,c,f)}}}(this.document);
+	
+		// DIC DNB
+		var dnb_query = "praise"; // 검색 페이지 않으면, null 로 세팅
+		var dnb_service = "endic";
+		var dnb_layer = "block";	//표시할려면 block
+		LazyLoad.js("http://dicimg.naver.com/dic-common-js/dnb_latest2/dic.DNB2.js?2016011311");
+	</script>
+    <!-- //공통 GNB -->    
+    
+	<script type="text/javascript">
+		var gnb_service = "endic"; 
+		var gnb_logout = encodeURIComponent(window.location.href);
+		var gnb_template = "gnb_utf8";
+		var gnb_searchbox = "off";
+		var gnb_shortnick = "on";
+		var gnb_brightness=2; // 0: 어두운색 아이콘, 1: 어두운색 아이콘 + 투명도, 2: 밝은색 아이콘 + 투명도, 3: 밝은색 아이콘(pwe 사용권장)
+			var gnb_item_hide_option= 0; //0(default) : 모두 표시, 1 : 로그인버튼 숨기기, 2 : user 레이어 숨기기, 4: Naver Me 영역 숨기기, 8 : 메일알림영역 숨기기, 16 : 프로필 이미지 숨기기, 32 : 임직원혜택 보이기(숨길 영역의 값을 bit sum 하여 적용)
+    </script>
+   	<div id="gnb" class="login_area">
+       <script type="text/javascript" charset="utf-8" src="http://static.gn.naver.net/template/gnb_utf8.nhn?2016011311"></script>
+   	</div>
+</div><div class="sta" id="top_search">
+	<input type="hidden" id="searchOptionValue" name="searchOptionValue" value="">	
+	<h2><a href="/?sLn=kr" title="영어사전 메인 페이지" class="N=a:DTP.endic"><span class="blind">영어사전 메인 페이지</span></a></h2>
+	<fieldset class="auto_on">
+		<legend>검색영역</legend>
+		<div class="gbox">
+			<div class="gbox_inner">
+                <dl class="selectlist">
+	                    <dt><a class="value(0)" href="javascript:void(0)">전체</a>
+                    <input type="hidden" id="selectRange" name="rcsection" value=""/></dt>
+                    <dd id="isubGbox">
+                        <ul class="opt">
+                        	<li><a class="value(0)" href="javascript:void(0)" onClick="clickcr(this,'DTP.all','','',event,1)">전체</a></li>
+							<li><a class="value(1)" href="javascript:void(0)" onClick="clickcr(this,'DTP.word','','',event,1)">단어/숙어</a></li>
+							<li><a class="value(2)" href="javascript:void(0)" onClick="clickcr(this,'DTP.content','','',event,1)">본문</a></li>
+							<li><a class="value(3)" href="javascript:void(0)" onClick="clickcr(this,'DTP.example','','',event,1)">예문</a></li>
+							<li><a class="value(4)" href="javascript:void(0)" onClick="clickcr(this,'DTP.thesaurus','','',event,1)">유의어/반의어</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+				<span class="keybox"><label for="ac_input" class="blind">검색어 입력</label><input id="ac_input" type="text" name="query" value="praise" class="keyword" title="검색어" maxlength="150"/></span>
+                <span class="static_keyword" style="display:none">praise</span>
+                <a href="javascript:void(0);" title="검색" id="top_search_btn" class="btn_sch ajax_searchbutton"><img src="http://dicimg.naver.net/endic/img/search_new.gif" alt="검색" onclick="clickcr(this,'DTP.search','','',event,1)" width="47" height="35"></a>			
+                <a href="javascript:void(0)" title="자동완성 펼치기" class="btn_arw arrow"><span class="blind">자동완성 펼치기</span></a>	
+                <!-- 자동완성 레이어 -->
+                <div class="auto_complete2" id="ac_layer">
+                	<h3 class="blind">자동완성 영역</h3>
+                    <ul class="list_head"><li></li></ul>
+                    <p class="auto_on_info">현재 자동완성 기능을 사용하고 계십니다.</p>
+                    <p class="auto_off_info">네이버 <strong>검색어 자동완성</strong>을 아시나요?<br/>검색어를 한 글자만 입력해도 찾으시려는 단어를 추천해주는 편리한 기능입니다.<br/><a href="#" onClick="clickcr(this,'DTP.autoon','','',event,1)"><img height="18" width="99" alt="자동완성 사용하기" src="http://sstatic.naver.com/search/images11/btn_atcmp.gif"/></a></p>
+                    <p class="nothing">해당 단어로 추천어가 없습니다.</p>
+                    <div class="option"><a href="javascript:void(0);" title="새 창" onClick="clickcr(this,'DTP.autohelp','','',event,1)"><span class="blind">영어사전</span>도움말</a> <span class="bar">| <a href="#" onClick="clickcr(this,'DTP.autooff','','',event,1)"><span class="blind">자동완성 </span>기능끄기</a></span></div>
+                </div>
+                <!-- //자동완성 레이어 -->
+			</div>
+		</div>
+	</fieldset>
+	<a href="javascript:openDetailedSearch()" class="btn_detail N=a:DTP.detail"><img alt="상세검색" src="http://dicimg.naver.net/endic/img/btn_detail2_new.gif" width="42" height="12" class="s1 s2 N=a:LNB.detail"></a>
+	<!-- //상세검색 레이어 -->
+    <div class="detail_layer" style="display:none" id="detail_layer">
+		<p class="tit">
+			<span class="blind">영어사전 상세검색</span>
+		</p>
+		<div class="inqu_area">
+			<dl class="srch">
+			<dt class="tit2">부분단어 검색</dt>
+			<dd class="srch_con">
+				<form action="">
+				<fieldset>
+				<legend>부분단어 검색</legend><input type="text" id="open_words" name="open_words" onkeydown="javascript: if (event.keyCode == 13) {goDetailedSearch();}"><label for="open_words">(으)로 시작하는 단어 검색하기</label><input type="text" id="end_words" name="end_words" onkeydown="javascript: if (event.keyCode == 13) {goDetailedSearch();}"><label for="end_words">(으)로 끝나는 단어 검색하기</label><input type="text" id="of_words" name="of_words" onkeydown="javascript: if (event.keyCode == 13) {goDetailedSearch();}"><label for="of_words">(이)가 포함된 단어 검색하기</label>
+				</fieldset>
+				</form>
+				<p class="tips">포함된 단어 검색은 한 가지 조건만 선택이 가능합니다.</p>
+			</dd>
+			</dl>
+			<a href="javascript:goDetailedSearch()" class="btn_check N=a:dti.search"><img src="http://dicimg.naver.net/endic/img/btn_check.gif" width="57" height="20" alt="검색하기"></a>
+			<p class="txt">사전검색 입력창에서 직접 와일드 카드(*,?)를 사용하여 검색이 가능합니다.</p>
+			<dl class="case">
+			<dt>예시)</dt>
+			<dd>s로 시작하는 모든 단어 : s*</dd>
+			<dd>s로 끝나는 모든 단어 : *s</dd>
+			<dd>s가 포함된 모든 단어 : *s*</dd>
+			<dd>s앞에 두 글자가 포함된 모든 단어 : ??s</dd>
+			</dl>
+			<a href="javascript:OPS.viewOPS('ops', {url : 'https://help.naver.com/support/contents/contents.nhn',  param : 'serviceNo=1000&categoryNo=2733'});openDetailedSearch()" class="more_link N=a:dti.guide">상세검색 규칙보기</a>
+		</div>
+		<a href="javascript:openDetailedSearch()" class="btn_close N=a:dti.close"><span class="blind">상세검색 레이어 닫기</span></a>
+	</div>
+	<ul class="select_dic_lang">
+		<li><a href="javascript:Kor2Eng('kr');" title="한국어로 설정(set to korean)" class="ko on N=a:DTP.korver">한국어로 설정(set to korean)</a></li>
+		<li><a href="javascript:Kor2Eng('en');" title="영어로 변경(set to english)" class="en N=a:DTP.engver">영어로 변경(set to english)</a></li>
+    </ul>
+    <a href="javascript:void(0);" id="mobile_btn" class="btn_mob N=a:DTP.plusmobile">모바일웹</a>
+    <div class="lyr_mobile" id ="mobile_intro_layer" style="display:none">
+        <p>모바일에 최적화된<br/><strong>영어사전</strong>을<br/>체험하세요</p>
+        <div>
+        	<span class="blind">http://m.endic.naver.com 모바일 영어사전 바로가기 QR코드</span>
+            <a href="javascript:blockChk('endic');" class="N=a:DTP*m.sms" title="팝업창"><span class="blind">모바일웹 영어사전</span>URL 문자 전송</a>
+        </div>
+    </div>
+</div><div id="container">
+
+
+	<div id="content">
+		<div class="view_list2">
+<h3 class="blind">검색 결과 선택 옵션</h3>
+<ul>
+	<li class="tx_depth1"><a href="search.nhn?sLn=kr&query=praise&searchOption=all" class="N=a:tab.all"><span>전체</span></a></li>
+    <li class="tx_depth2"><a href="search.nhn?sLn=kr&query=praise&searchOption=entry_idiom" class="N=a:tab.word"><span>단어/숙어</span></a></li>
+    <li class="tx_depth3"><a href="search.nhn?sLn=kr&query=praise&searchOption=mean" class="N=a:tab.content"><span>본문</span></a></li>
+    <li class="tx_depth4"><a href="search.nhn?sLn=kr&query=praise&searchOption=example" class="N=a:tab.example"><span>예문</span></a></li>
+    <li class="tx_depth5"><a href="search.nhn?sLn=kr&query=praise&searchOption=thesaurus" class="N=a:tab.thesaurus"><span>유의어/반의어</span></a></li>
+	<!--
+	<li><input name="searchOption" type="radio" value="all" id="s1" onclick="searchChange(this)" class="N=a:tab.all"/><label for="s1"><img src="http://dicimg.naver.net/endic/img/view_list01_off.gif" alt="전체"/></label></li>
+	<li><input name="searchOption" type="radio" value="entry_idiom" id="s2" onclick="searchChange(this)" class="N=a:tab.word"/><label for="s2"><img src="http://dicimg.naver.net/endic/img/view_list02_off.gif" alt="단어/숙어"/></label></li>
+	<li><input name="searchOption" type="radio" value="mean" id="s5" onclick="searchChange(this)" class="N=a:tab.content"/><label for="s5"><img src="http://dicimg.naver.net/endic/img/view_list05_off.gif" alt="본문"/></label></li>
+	<li><input name="searchOption" type="radio" value="example" id="s3" onclick="searchChange(this)" class="N=a:tab.example"/><label for="s3"><img src="http://dicimg.naver.net/endic/img/view_list03_off.gif" alt="예문"/></label></li>                
+	<li><input name="searchOption" type="radio" value="thesaurus" id="s4" onclick="searchChange(this)" class="N=a:tab.thesaurus"/><label for="s4"><img src="http://dicimg.naver.net/endic/img/view_list04_off.gif" alt="유의어/반의어"/></label></li>
+	-->
+</ul>
+            <div id="dts_area" class="sel">
+            	<span class="blind">영영사전만 보기 기능을 선택 혹은 해제하시면 화면이 새로고침되면서 포커스가 검색창으로 이동합니다.</span>
+            	<input name="" type="checkbox"  id="ss"  onclick="doChanged4DicType();" class="N=a:tab.eedic"/><label for="ss">영영사전만 보기</label>
+            	<div class="tip_over" style="display: none;"><p><span>영영사전 전용 모드로 변경합니다.</span></p></div>
+            </div>
+        </div>
+		<div class="word_view">
+          	<div class="tit">
+          		<h3>praise</h3>
+          		<span class="fnt_e15 ">
+          			
+          			
+          			
+          			
+					<img src="http://dicimg.naver.net/endic/img/star_num2.gif" alt="매우중요" title="매우중요" class="star"/>
+				</span>
+				
+				<img class="ico_cate" src="http://dicimg.naver.net/endic/img/ico_category.gif" width="13" height="10" alt="중고등학교 교과서 단어 분류"><span class="cate_v1"><a class="N=a:etr.category" href="http://endic.naver.com/lesson.nhn?fristId=110001&secondId=&thirdId=&fourId=&pageNo=1&pubLev=all&firstWord=all&posp=all" target="_blank">중1</a></span>, <span class="cate_v1"><a class="N=a:etr.category" href="http://endic.naver.com/lesson.nhn?fristId=110002&secondId=&thirdId=&fourId=&pageNo=1&pubLev=all&firstWord=all&posp=all" target="_blank">중2</a></span>, <span class="cate_v1"><a class="N=a:etr.category" href="/lesson.nhn?fristId=110003&secondId=&thirdId=&fourId=&pageNo=1&pubLev=all&firstWord=all&posp=all" target="_blank">중3</a></span>, <span class="cate_v1"><a class="N=a:etr.category" href="/lesson.nhn?fristId=110005&secondId=&thirdId=&fourId=&pageNo=1&pubLev=all&firstWord=all&posp=all" target="_blank">고교 영어1</a></span>, <span class="cate_v1"><a class="N=a:etr.category" href="/lesson.nhn?fristId=110006&secondId=&thirdId=&fourId=&pageNo=1&pubLev=all&firstWord=all&posp=all" target="_blank">고교 영어2</a></span>
+			</div>
+			<p class="btn_addword"><a href="#" class="wordbook" onClick="addWordbookAlert();"><input id="wordbook_entryId" type="hidden" value="2c44f1a7ae0f47789c62d20dba9707f7"/><input type="hidden" value="1"/><img src="http://dicimg.naver.net/endic/img/btn_add_word.gif" width="67" height="20" alt="단어장 저장"></a></p>
+            <div class="pron">
+            	<div class="fy">
+<em  class="first">미국∙영국
+<span class="fnt_e16">[preɪz]</span>                		
+<a id="pron_us_en" href="#" playlist="http://dic.dn.naver.com/v?_lsu_sa_=3b3838547dfe3366ef9ba1c83eb493f2ed6065f5950bbf6e60f27f701b8e6bd1ed5577cc6db5c578f96a6895bb2440b1d4cc4f6a883aa21fd2166326b9b35ae3cfa8257a6a65fffb990ef66d2fd3491ff6f697a339324ccf962abb5660762724666f01c9edecd0de05342c153eff18afa2c0a730a6203a3a089672d16e25ebac" class="play3 entry_quick_pron">
+<img src="http://dicimg.naver.net/endic/img/play.gif" class="play" alt="미국∙영국식 발음듣기" width="19" height="18"/></a>
+<a href="#" playlist="http://dic.dn.naver.com/v?_lsu_sa_=3b3838547dfe3366ef9ba1c83eb493f2ed6065f5950bbf6e60f27f701b8e6bd1ed5577cc6db5c578f96a6895bb2440b1d4cc4f6a883aa21fd2166326b9b35ae3cfa8257a6a65fffb990ef66d2fd3491ff6f697a339324ccf962abb5660762724666f01c9edecd0de05342c153eff18afa2c0a730a6203a3a089672d16e25ebac"  
+class="fresh3">
+
+                			<img src="http://dicimg.naver.net/endic/img/fresh.gif" class="fresh" alt="반복 듣기" width="20" height="18"/></a>
+                			<a id="entry_speed_0" style="display:none;" href="#" class="speed">속도<span class="blind">조절 열기</span></a>
+                   		<img class="v_line" src="http://dicimg.naver.net/endic/img/v_line3.gif" width="1" height="11" alt=""/>
+</em>
+<em>영국식                    	                    	               		
+<a id="pron_en" onClick="clickcr(this,'etr.listenuk','','',event)" href="#" playlist="http://dic.dn.naver.com/v?_lsu_sa_=37d82c53bd653c669f90e18433b4eef73da762c5f2070f6c6ed29b7babef6901b35417a16675367219206d456026704011413588fad297e46fa6eb6b142497272a69059a58d02652a11ab48ce7ffb3b0276643fa5de6f63ebec6bb1c4898d063220a8a74ba91b16cd0229a81270dd6fab4ab7decbc9dac612e3238f15938106c" class="play3">
+                			<img src="http://dicimg.naver.net/endic/img/play.gif" class="play" alt="영국식 발음듣기" width="19" height="18"/></a>
+                			<a href="#" playlist="http://dic.dn.naver.com/v?_lsu_sa_=37d82c53bd653c669f90e18433b4eef73da762c5f2070f6c6ed29b7babef6901b35417a16675367219206d456026704011413588fad297e46fa6eb6b142497272a69059a58d02652a11ab48ce7ffb3b0276643fa5de6f63ebec6bb1c4898d063220a8a74ba91b16cd0229a81270dd6fab4ab7decbc9dac612e3238f15938106c"  onClick="clickcr(this,'etr.repeatuk','','',event)" class="fresh3">
+                			<img src="http://dicimg.naver.net/endic/img/fresh.gif" class="fresh" alt="반복 듣기" width="20" height="18"/></a>
+                			<a id="entry_speed_1" style="display:none;" href="#" class="speed">속도<span class="blind">조절 열기</span></a>
+</em>
+            	</div>
+
+<script type="text/javascript" src="endic.naver.com/js/launcher.js?20160104152240" ></script>
+<script type="text/javascript" src="endic.naver.com/js/lcslog.js?20160104152240"></script>
+<script type="text/javascript">lcs_do();</script>
+<script type="text/javascript">window.attachEvent?window.attachEvent("onload",getGNB):window.addEventListener("load",getGNB,false);</script>
+</body>
+</html>
