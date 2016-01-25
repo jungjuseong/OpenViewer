@@ -1,3 +1,4 @@
+// hello
 package com.mypackage;
 
 public class Main {
