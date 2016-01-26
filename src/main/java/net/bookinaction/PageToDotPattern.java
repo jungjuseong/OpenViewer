@@ -79,7 +79,7 @@ public class PageToDotPattern {
 	// use itext library
 	public static void addPatternImage(String doc_file, String output_file, String paperSize) throws IOException { 		
 
-		PdfStamper stamper = null; 				
+		PdfStamper stamper = null;
 		try {	
 			PdfReader reader = new PdfReader(doc_file);
 			stamper = new PdfStamper(reader, new FileOutputStream(output_file));
