@@ -1,6 +1,7 @@
 package net.bookinaction.utils;
 
-// get path of the dot pattern image
+// get path of the dot pattern image - 
+// 페이지 제한이 있어서 체크하는 루틴을 넣어야 함
 public class DotPattern {
 	
 	static final String A3 = "A3";
