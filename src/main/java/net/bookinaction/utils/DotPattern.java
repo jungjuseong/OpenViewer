@@ -1,13 +1,14 @@
 package net.bookinaction.utils;
 
 // get path of the dot pattern image - 
-// 페이지 제한이 있어서 체크하는 루틴을 넣어야 함
+// 페이지 제한이 있어서 체크하는 루틴을 넣어야 함 - hotfix
 public class DotPattern {
 	
 	static final String A3 = "A3";
 	static final String A4 = "A4";
 	static final String B5 = "B5";
 	static final String B4 = "B4";
+	static final String LETTER = "LETTER";
 
 	static String dotPatternRoot = "/net/bookinaction/utils/res/dotpattern/";
 	 
