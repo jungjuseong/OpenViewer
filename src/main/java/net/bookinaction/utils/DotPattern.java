@@ -1,6 +1,6 @@
 package net.bookinaction.utils;
 
-// get path of the dot pattern image
+// get path of the dot pattern image - for testing
 public class DotPattern {
 	
 	static final String A3 = "A3";
