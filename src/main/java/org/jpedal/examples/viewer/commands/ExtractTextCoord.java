@@ -15,7 +15,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -33,12 +32,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.jpedal.PdfDecoderInt;
 import org.jpedal.examples.viewer.Values;
 import org.jpedal.examples.viewer.commands.generic.GUIExtractText;
 import org.jpedal.examples.viewer.gui.javafx.dialog.FXDialog;
 import org.jpedal.gui.GUIFactory;
-import org.jpedal.utils.Messages;
 
 import net.bookinaction.TextInfoExtractor;
 import net.bookinaction.model.StripperParam;
@@ -65,6 +64,7 @@ public class ExtractTextCoord extends GUIExtractText {
     final static StripperParam S_Korean = new StripperParam( 7.5f, 1.2f);
     final static StripperParam S_TOEIC = new StripperParam(3.0f, 2.0f);
     
+	@SuppressWarnings("rawtypes")
 	static Task copyWorker;
     
 	public static void extractTextAndCoord(final GUIFactory currentGUI, final Values commonValues) throws IOException {  	
@@ -94,9 +94,7 @@ public class ExtractTextCoord extends GUIExtractText {
             String withoutExtensionFile = fileName.split("\\.")[0];
             fileChooser.setInitialFileName(withoutExtensionFile + "-coord");
 
-            /**
-             * Begin file-save process.
-             */
+            // Begin file-save process.
             file = fileChooser.showSaveDialog((Stage)currentGUI.getFrame());
 
             if (file != null) {
@@ -185,7 +183,7 @@ public class ExtractTextCoord extends GUIExtractText {
                 final TextInfoExtractor extractor = new TextInfoExtractor(fileToSave, S_Korean);  
 			
                 final PDDocument document = PDDocument.load(new File(commonValues.getSelectedFile()));
-                final PrintWriter  writer = new PrintWriter(new File(fileToSave));	
+                final PrintWriter writer = new PrintWriter(new File(fileToSave));	
 
                 extractButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -223,19 +221,17 @@ public class ExtractTextCoord extends GUIExtractText {
     @SuppressWarnings("rawtypes")
 	public static Task createWorker(TextInfoExtractor extractor, final PDDocument document, final PrintWriter writer) {
         return new Task() {
-            @Override
-            
+            @Override            
             protected Object call() throws Exception {
-
-                try {
-                    for (int i = 0; i <= document.getNumberOfPages(); i++) {
-                    	extractor.getTextPositionFromPage(document, i+1, writer);
-                        //updateMessage(String.format("%d page", i+1));
-                        updateProgress(i + 1, document.getNumberOfPages());
-                    }
-                    
+                try {                	
+                    for (int i = 1; i <= document.getNumberOfPages(); i++) {                    	
+                    	
+                    	extractor.getTextPositionFromPage(document, i, writer);
+                        //updateMessage(String.format("%d page.", i + 1));
+                        updateProgress(i, document.getNumberOfPages());
+                    }                    
                 } catch (final Exception e1) {
-                   //currentGUI.showMessageDialog(Messages.getMessage("PdfViewerException.NotSaveInternetFile")+' '+e1);
+                   e1.printStackTrace();
                 }
      
                 if (document != null) {
@@ -248,6 +244,5 @@ public class ExtractTextCoord extends GUIExtractText {
                 return true;
             }
         };
-    }
-    
+    }    
 }

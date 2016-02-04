@@ -1,6 +1,5 @@
 package net.bookinaction.model;
 
-
 public class StripperParam {
 
     //private float averageCharTolerance;

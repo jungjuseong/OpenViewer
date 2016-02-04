@@ -5,7 +5,6 @@ import net.bookinaction.model.StripperParam;
 import net.bookinaction.utils.Vector;
 
 import org.apache.fontbox.util.BoundingBox;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType3Font;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -21,28 +20,20 @@ import java.util.List;
 public class TextLocationListener extends PDFTextStripper {
 
 	private StripperParam stripperParam;
-
 	private StripString stripString;
-	private PDRectangle cropBox;
 
 	private List<Vector> startPoints;
 	private List<Vector> endPoints;
 
-	public TextLocationListener(StripperParam stripperParam) throws IOException {
+	public TextLocationListener(StripperParam stripperParam, StripString stripString) throws IOException {
 		super();
 
 		this.stripperParam = stripperParam;
+		this.stripString = stripString;
 
 		startPoints = new ArrayList<Vector>();
 		endPoints = new ArrayList<Vector>();
 	}
-
-	public void setParams(StripString stripString, PDRectangle cropBox) throws IOException {
-
-		this.stripString = stripString;
-		this.cropBox = cropBox;
-	}
-
 
 	private float calculateDistance(Vector x0, Vector x1) {
 
@@ -86,8 +77,7 @@ public class TextLocationListener extends PDFTextStripper {
 		Rectangle2D.Float rect = new Rectangle2D.Float(0, bbox.getLowerLeftY(), xadvance, bbox.getHeight());
 
 		// glyph space -> user space
-		// note: text.getTextMatrix() is *not* the Text Matrix, it's the Text
-		// Rendering Matrix
+		// note: text.getTextMatrix() is not the Text Matrix, it's the Text Rendering Matrix
 		AffineTransform affineTrans = textPos.getTextMatrix().createAffineTransform();
 		
 		if (font instanceof PDType3Font) {
@@ -123,7 +113,7 @@ public class TextLocationListener extends PDFTextStripper {
 
 			if (!firstRender) {
 
-				Vector x1 = startPoints.get(lastIndex);
+				//Vector x1 = startPoints.get(lastIndex);
 				Vector x2 = endPoints.get(lastIndex);
 
 				float distance = calculateDistance(x2, startPoint);

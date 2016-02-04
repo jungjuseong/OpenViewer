@@ -82,12 +82,11 @@ public final class TextInfoExtractor {
     }
 
     public void getTextPositionFromPage(PDDocument document, int pageNum, PrintWriter writer) throws IOException {
-    	
-        Stamper s = new Stamper(); // utility class
-
-        PDPage page = document.getPage(pageNum);
+        //System.out.println(String.format("getPage: %d", pageNum));
+        
+        PDPage page = document.getPage(pageNum-1);
     	PDRectangle cropBox = page.getCropBox();
-
+        
         // extract image locations
         ImageLocationListener imageLocationsListener = new ImageLocationListener();
 
@@ -98,8 +97,7 @@ public final class TextInfoExtractor {
         // extract Text locations
         StripString stripString = new StripString();
 
-        TextLocationListener stripper = new TextLocationListener(stripperParam);
-        stripper.setParams(stripString, cropBox);
+        TextLocationListener stripper = new TextLocationListener(stripperParam, stripString);
         stripper.setSortByPosition(true);
 
         List<StripLine> stripLines = new ArrayList<StripLine>();
@@ -107,13 +105,20 @@ public final class TextInfoExtractor {
         stripper.setStartPage(pageNum);
         stripper.setEndPage(pageNum);
 
-        stripper.writeText(document, new OutputStreamWriter(new ByteArrayOutputStream()));
-
+        try {
+        	stripper.writeText(document, new OutputStreamWriter(new ByteArrayOutputStream()));
+        }
+        catch(IOException e) {
+        	return;
+        }   
+        
         if (page.getContents() != null)
             stripper.processPage(page);
 
         // declare canvas and keep this position
         PDPageContentStream canvas = new PDPageContentStream(document, page, true, true, true);
+
+        Stamper s = new Stamper(); // utility class
 
         // draw the bounding box of each character
         for (int i = 0; i < stripString.size(); i++)
@@ -182,8 +187,6 @@ public final class TextInfoExtractor {
         }
 
         canvas.close();
-
-
     }
     
     public void doTextPosition(String source, String coord_text, StripperParam sParam ) throws IOException {
