@@ -87,7 +87,8 @@ public class ExtractTextCoord2 extends GUIExtractText {
 	static String renderedPdfFile;
 	static String pdfTemp;
 	static String thumbnailFile;
-	
+	static String onlyDotPatternFile;
+
 	static String dotPatternSizeInPaper;
 	
 	static FXDialog optionDialog;
@@ -119,54 +120,55 @@ public class ExtractTextCoord2 extends GUIExtractText {
     
     @FXML 
     protected void handleTextExtract(ActionEvent event) {    	
-    	
-		worker = textExtractorWorker();
-		
-		worker.messageProperty().addListener(new ChangeListener<String>() {
-			public void changed(ObservableValue<? extends String> observable, String old, String message) {
 
-				if (message.equals(DONE)) {
-					optionDialog.close();
-				} else {
-					progressDescription.setText(message);
-				}
-			}
-		});
-		
 		File SelectedFile = new File(sourcePdf); 
 		String job_name = SelectedFile.getName().split("\\.")[0];
 		outputFolder = SelectedFile.getParentFile() + "\\" + job_name;
 		
-		System.out.println("sourcePdf:" + sourcePdf);
-		System.out.println("pdf File:" + SelectedFile.getName());
-		System.out.println("job:" + SelectedFile.getName().split("\\.")[0]);
+		//System.out.println("sourcePdf:" + sourcePdf);
+		//System.out.println("pdf File:" + SelectedFile.getName());
+		//System.out.println("job:" + SelectedFile.getName().split("\\.")[0]);
 		System.out.println("output folder:" + outputFolder);
 		
 		File outputFolderFile = new File(outputFolder);
-		boolean success = false;
 		
-		if (!outputFolderFile.exists()) {
-			success = outputFolderFile.mkdirs();
-		}
+		if (false == outputFolderFile.exists()) {
 
-		
-		if (success) {
-			coordFileToSave = outputFolder + "\\" + job_name + "-coord.txt";		
-			renderedPdfFile = outputFolder + "\\" + job_name + "-rendered.pdf"; 
-			thumbnailFile = outputFolder + "\\" + job_name + "-thumbnail.png";
-			
-			pdfTemp = outputFolder + "\\_temp.pdf";
-			
-			extractButton.setDisable(true);
-			//closeButton.setDisable(false);
-	        
-			progressBar.setProgress(0);
-			progressBar.progressProperty().unbind();
-			progressBar.progressProperty().bind(worker.progressProperty());
-	
-			workerThread = new Thread(worker);		
-			workerThread.start();
+			if (false == outputFolderFile.mkdirs()) {
+				System.out.println(String.format("Fail to make %s folder", outputFolder));
+				progressDescription.setText(String.format("Fail to make %s folder",outputFolder));
+				
+				return;
+			}
 		}
+		
+		coordFileToSave = outputFolder + "\\" + job_name + "-coord.txt";		
+		renderedPdfFile = outputFolder + "\\" + job_name + "-rendered.pdf"; 
+		thumbnailFile = outputFolder + "\\" + job_name + "-thumbnail.png";
+		onlyDotPatternFile = outputFolder + "\\" + job_name + "-dotpattern.pdf";
+
+		pdfTemp = outputFolder + "\\_temp.pdf";
+		
+		extractButton.setDisable(true);
+		//closeButton.setDisable(false);
+        
+		worker = textExtractorWorker();
+		
+		worker.messageProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> observable, String old, String message) {
+				if (message.equals(DONE)) 
+					optionDialog.close();
+				else 
+					progressDescription.setText(message);				
+			}
+		});		
+		
+		progressBar.setProgress(0);
+		progressBar.progressProperty().unbind();
+		progressBar.progressProperty().bind(worker.progressProperty());
+
+		workerThread = new Thread(worker);		
+		workerThread.start();
     }
     
     private String chooseDirectory(Stage stage, String initialDirectory) {
@@ -303,20 +305,23 @@ public class ExtractTextCoord2 extends GUIExtractText {
 					e1.printStackTrace();
 				}
 				
-				if (document != null) 
-					document.close();
-				
+				document.close();				
 				
 				// add dot-pattern
 				updateMessage("Add dot-pattern ...");
 
-				PageToDotPattern.addPatternImage(pdfTemp, renderedPdfFile, dotPatternSizeInPaper);					
-
+				PageToDotPattern.addPatternImage(pdfTemp, renderedPdfFile, dotPatternSizeInPaper);
+				
+				// make thumbnail image
 				PageToDotPattern.makeDocumentThumbnail(sourcePdf, thumbnailFile, 0, 72);
 					 
-				File pdf = new File(pdfTemp); // remove file
-				pdf.delete();
+				new File(pdfTemp).delete();
 
+				// remove all text contents and save ...
+				updateMessage("Remove contents to make dot-pattern only...");
+				PageToDotPattern.makeBlankDocument(sourcePdf, pdfTemp);
+				PageToDotPattern.addPatternImage(pdfTemp, onlyDotPatternFile,dotPatternSizeInPaper);				
+				
 				updateMessage(DONE);
 				
 				return true;
