@@ -31,7 +31,7 @@ public class BrainCommands extends Commands {
 
 	public final static int ABOUT_BRAIN = 2000;
 	public final static int EXPORT_TEXT_COORD = 2100;
-	public final static int EXPORT_PATTERN_IMAGE = 2101;
+	public final static int EXPORT_DOT_PATTERN = 2101;
 	
 	public final static int PRINT_WITH_DOT_PATTERN = 2102; // print pages with the dot pattern
 
@@ -42,6 +42,7 @@ public class BrainCommands extends Commands {
 		super(commonValues, currentGUI, decode_pdf, thumbnails, properties, searchFrame, currentPrinter);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object executeCommand(final int ID, Object[] args) {
 
@@ -73,7 +74,7 @@ public class BrainCommands extends Commands {
 		// Execute FX Commands
 		switch (ID) {
 		case EXPORT_TEXT_COORD:
-			ExtractTextCoord.execute(args, currentGUI, decode_pdf, commonValues);
+			ExtractTextCoord2.execute(args, currentGUI, decode_pdf, commonValues);
 			break;
 			
 		case EXIT:
@@ -183,8 +184,8 @@ public class BrainCommands extends Commands {
 			JavaFXRSSyndication.execute(args);
 			break;
 
-		case PRINT:
-			PrintWithDotPattern.execute(args, currentGUI, commonValues);
+		case EXPORT_DOT_PATTERN:
+			//ExportWithDotPattern.execute(args, currentGUI, commonValues);
 			break;
 			
 		case PRINT_WITH_DOT_PATTERN:

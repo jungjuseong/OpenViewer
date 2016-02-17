@@ -1,4 +1,4 @@
-package org.jpedal.examples.viewer;
+package org.jpedal.examples.viewer.commands;
 
 import java.awt.print.Book;
 import java.awt.print.PageFormat;
@@ -15,6 +15,7 @@ import javax.print.attribute.standard.PageRanges;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
 import org.apache.pdfbox.printing.PDFPrintable;
+import org.jpedal.examples.viewer.Values;
 import org.jpedal.examples.viewer.gui.javafx.dialog.FXDialog;
 import org.jpedal.gui.GUIFactory;
 
@@ -112,7 +113,7 @@ public class PrintWithDotPattern {
 
 					String tempFile = commons.getInputDir() + "__tmp.pdf";
 
-					renderWorker = createWorker(commons.getSelectedFile(), tempFile);
+					renderWorker = renderDocumentWorker(commons.getSelectedFile(), tempFile);
 					progressBar.progressProperty().bind(renderWorker.progressProperty());
 
 					renderWorker.messageProperty().addListener(new ChangeListener<String>() {
@@ -136,13 +137,8 @@ public class PrintWithDotPattern {
 
 			}
 		});
-
-
-
-		RenderOptionDialog.show();
 		
-
-
+		RenderOptionDialog.show();
 	}
 
 
@@ -150,8 +146,7 @@ public class PrintWithDotPattern {
 	
 		PDDocument document = null;
 		String fileForPrint = System.getProperty("user.dir") + "/_temp.pdf";
-		try {
-			
+		try {			
 			PageToDotPattern.addPatternImage(filename, fileForPrint, "A4");
 
 			document = PDDocument.load(new File(fileForPrint));
@@ -164,7 +159,7 @@ public class PrintWithDotPattern {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private static Task createWorker(String job_file, String render_pdf) {
+	private static Task renderDocumentWorker(String job_file, String render_pdf) {
 		return new Task() {
 			@Override
 			protected Boolean call() throws Exception {

@@ -175,7 +175,7 @@ public class BrainMenuItems extends GUIMenuItems {
 		case BrainCommands.EXPORT_TEXT_COORD:
 			return exportTextCoord;
 			
-		case BrainCommands.EXPORT_PATTERN_IMAGE:
+		case BrainCommands.EXPORT_DOT_PATTERN:
 			return exportPatternImage;
 
 		case Commands.PAGETOOLSMENU:
@@ -359,7 +359,7 @@ public class BrainMenuItems extends GUIMenuItems {
 		case BrainCommands.EXPORT_TEXT_COORD:
 			exportTextCoord = (MenuItem) menuItem;
 			break;
-		case BrainCommands.EXPORT_PATTERN_IMAGE:
+		case BrainCommands.EXPORT_DOT_PATTERN:
 			exportPatternImage = (MenuItem) menuItem;
 			break;
 		case Commands.ROTATE:
@@ -546,7 +546,7 @@ public class BrainMenuItems extends GUIMenuItems {
 		 */
 
 		addMenuItem(exportMenu, "텍스트와 좌표 추출", "", BrainCommands.EXPORT_TEXT_COORD);
-		addMenuItem(exportMenu, "패턴 이미지로 내보내기", "", BrainCommands.EXPORT_PATTERN_IMAGE);
+		addMenuItem(exportMenu, "인쇄용 도트패턴 만들기(구현 중)", "", BrainCommands.EXPORT_DOT_PATTERN);
 
 		/**
 		 * items options if IText available
@@ -604,16 +604,10 @@ public class BrainMenuItems extends GUIMenuItems {
 		addToMainMenu(helpMenu);
 
 		addMenuItem(helpMenu, Messages.getMessage("PdfViewerHelpMenu.VisitWebsite"), "", Commands.VISITWEBSITE);
-		addMenuItem(helpMenu, Messages.getMessage("PdfViewerHelpMenuTip.text"), "", Commands.TIP);
+		//addMenuItem(helpMenu, Messages.getMessage("PdfViewerHelpMenuTip.text"), "", Commands.TIP);
 		// addMenuItem(helpMenu,Messages.getMessage("PdfViewerHelpMenuUpdates.text"),"",Commands.UPDATE);
 		addMenuItem(helpMenu, Messages.getMessage("PdfViewerHelpMenuabout.text"),
 				Messages.getMessage("PdfViewerHelpMenuTooltip.about"), Commands.ABOUT);
-
-		if (includeExtraMenus)
-			addMenuItem(helpMenu, Messages.getMessage("PdfViewerHelpMenuTutorial.text"),
-					"Visit http://www.idrsolutions.com/java-pdf-library-support/", Commands.HELP);
-		
-
 	}
 
 	/** setup keyboard shortcuts */

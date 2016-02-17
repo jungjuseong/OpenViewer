@@ -52,8 +52,9 @@ public class PageToDotPattern {
 
 			log.info(String.format("%s Done", job_file));
 
-		} finally {
-				document.close();
+		} 
+		finally {
+			document.close();
 		}
 	}
 	
@@ -63,25 +64,33 @@ public class PageToDotPattern {
         PDRectangle cropBox = pdPage.getCropBox();
 		PDFRenderer pdfRenderer = new SimpleRenderer(document);
 			
-		BufferedImage renderImage = pdfRenderer.renderImageWithDPI(page, 72.0f * SCALE);
+		BufferedImage renderImage = null;
+		try {
+			renderImage = pdfRenderer.renderImageWithDPI(page, 72.0f * SCALE);
+			Graphics2D g2d = renderImage.createGraphics();
+			g2d.scale(SCALE, SCALE);
+			g2d.dispose();
+			
+			PDImageXObject pdImage = LosslessFactory.createFromImage(document, renderImage); 
+			PDPageContentStream contentStream = new PDPageContentStream(document, pdPage, true, true);
 		
-		Graphics2D g2d = renderImage.createGraphics();
-		g2d.scale(SCALE, SCALE);
-		g2d.dispose();
+			contentStream.drawImage(pdImage, cropBox.getLowerLeftX(), cropBox.getLowerLeftY(), pdImage.getWidth()/SCALE, pdImage.getHeight()/SCALE);
+			contentStream.close();
+		}
+		catch (IOException e) {
+			//
+		}
 		
-		PDImageXObject pdImage = LosslessFactory.createFromImage(document, renderImage); 
-		PDPageContentStream contentStream = new PDPageContentStream(document, pdPage, true, true);
-	
-		contentStream.drawImage(pdImage, cropBox.getLowerLeftX(), cropBox.getLowerLeftY(), pdImage.getWidth()/SCALE, pdImage.getHeight()/SCALE);
-		contentStream.close();
 	}
 		
 	// use itext library
 	public static void addPatternImage(String doc_file, String output_file, String paperSize) throws IOException { 		
 
 		PdfStamper stamper = null;
+		PdfReader reader = null;
+
 		try {	
-			PdfReader reader = new PdfReader(doc_file);
+			reader = new PdfReader(doc_file);
 			stamper = new PdfStamper(reader, new FileOutputStream(output_file));
 	
 			for (int page = 1; page <= reader.getNumberOfPages(); page++) {
@@ -98,7 +107,6 @@ public class PageToDotPattern {
 			}
 			
 			stamper.close();
-			reader.close();
 			
 			log.info(String.format("Done"));
 		}
@@ -106,17 +114,18 @@ public class PageToDotPattern {
 			;
 		}
 		finally {
+			reader.close();
 		}	
 	}
 	
 	final static float DOT_PATTERN_SCALE = 6f;
 	
-	public static void addDotPatternToPage(com.itextpdf.text.Rectangle cropRect, PdfContentByte canvas, Image coordImage) 
+	private static void addDotPatternToPage(com.itextpdf.text.Rectangle cropRect, PdfContentByte canvas, Image coordImage) 
 			throws IOException, DocumentException { 
 								
 		Rectangle cropBox = new Rectangle(cropRect);
 		
-		canvas.saveState();		
+		canvas.saveState();
 		
 		if (coordImage.isMaskCandidate())
 			coordImage.makeMask();

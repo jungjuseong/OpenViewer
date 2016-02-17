@@ -52,14 +52,15 @@ public class Stamper {
         return new PDRectangle(rect.getLowerLeftX() + dx, rect.getLowerLeftY() + dy, rect.getWidth() * scalex, rect.getHeight() * scaley);
     }
 
-    public void showBox(PDPageContentStream canvas, Rectangle2D rect, PDColor color) throws IOException {
+    public void showBox(PDPageContentStream canvas, Rectangle2D rect, PDRectangle cropBox, PDColor color) throws IOException {
 
         canvas.saveGraphicsState();
 
         canvas.setLineWidth(0.1f);
         canvas.setStrokingColor(color);
 
-        canvas.addRect((float) rect.getX(), (float) rect.getY(), (float) rect.getWidth(), (float) rect.getHeight());
+        canvas.addRect((float) rect.getX() + cropBox.getLowerLeftX(), 
+        		(float) rect.getY() + cropBox.getLowerLeftY(), (float) rect.getWidth(), (float) rect.getHeight());
         canvas.stroke();
 
         canvas.saveGraphicsState();

@@ -190,7 +190,7 @@ public final class ExtractAnnotations {
                     //annotations.add(linkAnnotation(pdRect, comment, highlightText));
                     //annotations.add(annotationSquareCircle(pdRect, BLUE));
                     s.showBox(canvas,
-                            new Rectangle2D.Float(pdRect.getLowerLeftX(), pdRect.getUpperRightY(),pdRect.getWidth(), pdRect.getHeight()), Color.BLUE);
+                            new Rectangle2D.Float(pdRect.getLowerLeftX(), pdRect.getUpperRightY(),pdRect.getWidth(), pdRect.getHeight()), cropBox, Color.BLUE);
 
                     i++;
                 }

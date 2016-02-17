@@ -49,16 +49,12 @@ import net.bookinaction.model.StripperParam;
 public class ExtractTextCoord extends GUIExtractText {
 
     public static void execute(final Object[] args, final GUIFactory currentGUI, final PdfDecoderInt decode_pdf, final Values commonValues) {
-        if (args == null) {
         	try {
 				extractTextAndCoord(currentGUI, commonValues);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        } else {
-
-        }
     }
     
     final static StripperParam S_Korean = new StripperParam( 7.5f, 1.2f);
@@ -180,7 +176,7 @@ public class ExtractTextCoord extends GUIExtractText {
 
                 extractionGroup.selectedToggleProperty().addListener(updateSelectionListener);
                 
-                final TextInfoExtractor extractor = new TextInfoExtractor(fileToSave, S_Korean);  
+                final TextInfoExtractor extractor = new TextInfoExtractor(fileToSave);  
 			
                 final PDDocument document = PDDocument.load(new File(commonValues.getSelectedFile()));
                 final PrintWriter writer = new PrintWriter(new File(fileToSave));	
@@ -226,7 +222,7 @@ public class ExtractTextCoord extends GUIExtractText {
                 try {                	
                     for (int i = 1; i <= document.getNumberOfPages(); i++) {                    	
                     	
-                    	extractor.getTextPositionFromPage(document, i, writer);
+                    	//extractor.getTextPositionFromPage(document, i, writer);
                         //updateMessage(String.format("%d page.", i + 1));
                         updateProgress(i, document.getNumberOfPages());
                     }                    

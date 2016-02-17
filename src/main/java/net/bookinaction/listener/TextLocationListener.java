@@ -72,7 +72,7 @@ public class TextLocationListener extends PDFTextStripper {
 			xadvance = font.getWidth(textPos.getCharacterCodes()[0]);
 		} catch (IOException e) {
 			e.printStackTrace();
-		} // ...
+		}
 
 		Rectangle2D.Float rect = new Rectangle2D.Float(0, bbox.getLowerLeftY(), xadvance, bbox.getHeight());
 
@@ -86,6 +86,7 @@ public class TextLocationListener extends PDFTextStripper {
 			affineTrans.scale(1 / 1000f, 1 / 1000f);
 		}
 		Shape s = affineTrans.createTransformedShape(rect);
+		
 		return s.getBounds2D();
 	}
 
@@ -152,8 +153,7 @@ public class TextLocationListener extends PDFTextStripper {
 
 			startPoints.add(startPoint);
 			endPoints.add(endPoint);
-			stripString.add(textPos.getUnicode(), startPoint, adjustedRect, textPos.getFont(),
-					textPos.getFontSizeInPt());
+			stripString.add(textPos.getUnicode(), startPoint, adjustedRect, textPos.getFont(), textPos.getFontSizeInPt());
 		}
 	}
 }

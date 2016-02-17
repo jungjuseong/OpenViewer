@@ -44,8 +44,8 @@ import java.util.List;
  */
 public final class TextInfoExtractor {
 
-	private String coord_text;
-	private StripperParam  stripperParam;
+	private String textCoordFile;
+	//private static StripperParam  stripperParam;
 	
     /**
      * This will print the documents text in a certain area.
@@ -69,22 +69,22 @@ public final class TextInfoExtractor {
     public TextInfoExtractor() {
     }
     
-    public TextInfoExtractor(String coord_text, StripperParam stripperParam) {
-    	this.coord_text = coord_text;
-    	this.stripperParam = stripperParam;
+    public TextInfoExtractor(String textCoordFile) {
+    	this.textCoordFile = textCoordFile;
+    	//this.stripperParam = stripperParam;
     }
  
     public void doTextPosition(String source, StripperParam sParam ) throws IOException {
     	
-    	if (this.coord_text != null)
-    		doTextPosition(source, this.coord_text, sParam);
+    	if (this.textCoordFile != null)
+    		doTextPosition(source, this.textCoordFile, sParam);
     	
     }
 
-    public void getTextPositionFromPage(PDDocument document, int pageNum, PrintWriter writer) throws IOException {
+    public static void getTextPositionFromPage(PDDocument document, StripperParam stripperParam, int pageNum, PrintWriter writer) throws IOException {
         //System.out.println(String.format("getPage: %d", pageNum));
         
-        PDPage page = document.getPage(pageNum-1);
+        PDPage page = document.getPage(pageNum-1); // pdfbox uses the 0-base index
     	PDRectangle cropBox = page.getCropBox();
         
         // extract image locations
@@ -121,10 +121,10 @@ public final class TextInfoExtractor {
         Stamper s = new Stamper(); // utility class
 
         // draw the bounding box of each character
-        for (int i = 0; i < stripString.size(); i++)
+        for (int i = 0; i < stripString.size(); i++) {
             // original Rectangle
-            s.showBox(canvas, stripString.boundingRect(i), Color.GRAY80);
-
+            s.showBox(canvas, stripString.boundingRect(i), cropBox, Color.GRAY80);
+        }
         s.recordPageSize(writer, pageNum, cropBox);
 
         // splits into lines
@@ -149,7 +149,7 @@ public final class TextInfoExtractor {
             System.out.println(String.format("%d-%d: %s - [%.0f %.0f %.0f %.0f]", pageNum, lineNum, sub,
                     mergedRect.getX(), mergedRect.getY(), mergedRect.getWidth(), mergedRect.getHeight()));
 
-            s.showBox(canvas, mergedRect, Color.GREEN);
+            s.showBox(canvas, mergedRect, cropBox, Color.GREEN);
             s.recordTextPosition(writer, sub, pageNum, mergedRect, "LINE");
 
             /******* get words in the line *********/
@@ -165,7 +165,7 @@ public final class TextInfoExtractor {
                 System.out.println(String.format("%d-%d: %s - [%.0f %.0f %.0f %.0f]", pageNum, lineNum, t.getStem(), mergedRect.getX(), mergedRect.getY(), mergedRect.getWidth(), mergedRect.getHeight()));
 
                 s.recordTextPosition(writer, t.getStem(), pageNum, mergedRect, "TEXT");
-                s.showBox(canvas, mergedRect, Color.RED);
+                s.showBox(canvas, mergedRect, cropBox, Color.RED);
 
             }
 
@@ -180,7 +180,7 @@ public final class TextInfoExtractor {
         for (Rectangle2D imRect : imageRects) {
             //page.getAnnotations().add(annotationMaker.textMarkupAnnotation(Color.YELLOW, (Rectangle2D.Float) imRect, "image"+imageNum));
 
-            s.showBox(canvas, imRect, Color.YELLOW);
+            s.showBox(canvas, imRect, cropBox, Color.YELLOW);
             s.recordTextPosition(writer, "[image" + imageNum + "]", pageNum, imRect, "IMAGE");
 
             imageNum++;
@@ -189,7 +189,7 @@ public final class TextInfoExtractor {
         canvas.close();
     }
     
-    public void doTextPosition(String source, String coord_text, StripperParam sParam ) throws IOException {
+    public void doTextPosition(String source, String coord_text, StripperParam stripperParam ) throws IOException {
 
         String source_pdf = source;         
         String new_file = source.split("\\.")[0] + "-new.pdf";
@@ -200,10 +200,8 @@ public final class TextInfoExtractor {
 
         //s.recordHeader(writer, source_pdf, document.getNumberOfPages(), sParam);
         
-        for (int i = 0; i < document.getNumberOfPages(); i++) {
-        	
-        	getTextPositionFromPage(document, i+1, writer);
-            
+        for (int i = 0; i < document.getNumberOfPages(); i++) {        	
+        	getTextPositionFromPage(document,stripperParam, i+1, writer);            
 
         }
 
