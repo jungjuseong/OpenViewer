@@ -5,32 +5,44 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane hgap="10" scaleShape="false" styleClass="root" vgap="10" 
-xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="org.jpedal.examples.viewer.commands.ExtractTextCoord2">
+<GridPane hgap="10" prefHeight="225.0" prefWidth="297.0" scaleShape="false" styleClass="root" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.jpedal.examples.viewer.commands.ExtractTextCoord2">
 
 	<padding>
 		<Insets bottom="25" left="25" right="25" top="25" />
 	</padding>
-   
-   	<Label text="닷패턴 크기" GridPane.rowIndex="1">
-   		<GridPane.margin>
-   			<Insets left="10.0" />
-   		</GridPane.margin>
-   	</Label>
-   	<ProgressBar fx:id="progressBar" prefHeight="18.0" prefWidth="130.0" progress="0.0" GridPane.columnIndex="1" />
-   	<Label fx:id="progressLabel" prefHeight="15.0" prefWidth="47.0" text="진행:" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
-   		<GridPane.margin>
-   			<Insets left="20.0" />
-   		</GridPane.margin>
-   	</Label>
-   	<ComboBox fx:id="dotPatternSize" prefHeight="23.0" prefWidth="87.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-   
-   	<HBox alignment="center" prefHeight="23.0" prefWidth="146.0" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="2">
-      <children>
-      		<Button fx:id="extractButton" onAction="#handleTextExtract" text="추출하기" />
-      		<Button fx:id="closeButton" onAction="#handleClose" text="닫기" />
-      		
-      </children>
-   	</HBox>
+   <children>
+      
+      	<Label text="닷패턴 크기" GridPane.rowIndex="2">
+      		<GridPane.margin>
+      			<Insets left="10.0" />
+      		</GridPane.margin>
+      	</Label>
+      	<ProgressBar fx:id="progressBar" prefHeight="18.0" prefWidth="130.0" progress="0.0" GridPane.columnIndex="1" />
+      	<Label fx:id="progressLabel" prefHeight="15.0" prefWidth="47.0" text="진행:" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+      		<GridPane.margin>
+      			<Insets left="20.0" />
+      		</GridPane.margin>
+      	</Label>
+      	
+      	<ChoiceBox fx:id="dotPatternSize" prefHeight="23.0" prefWidth="101.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      
+      	<HBox alignment="center" prefHeight="23.0" prefWidth="146.0" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <children>
+         		<Button fx:id="extractButton" onAction="#handleTextExtract" text="추출하기" />
+         		<Button fx:id="closeButton" onAction="#handleClose" text="닫기" />
+         		
+         </children>
+      	</HBox>
+      <Label fx:id="progressDescription" prefHeight="15.0" prefWidth="142.0" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label text="책 스타일 " GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="40.0" />
+         </GridPane.margin>
+      </Label>
+      <ChoiceBox fx:id="bookStyle" prefHeight="23.0" prefWidth="101.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label text="테스트 모드" GridPane.rowIndex="4" />
+      <CheckBox fx:id="testModeCheckbox" onAction="#handleTestModeAction" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+   </children>
+
 
 </GridPane>

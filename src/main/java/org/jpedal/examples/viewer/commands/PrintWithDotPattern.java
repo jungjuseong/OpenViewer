@@ -180,7 +180,7 @@ public class PrintWithDotPattern {
 						// Now block the thread for a short time, but be sure
 						// to check the interrupted exception for cancellation!
 						try {
-							Thread.sleep(100);
+							Thread.sleep(200);
 						} catch (InterruptedException interrupted) {
 							if (isCancelled()) {
 								updateMessage("Cancelled");

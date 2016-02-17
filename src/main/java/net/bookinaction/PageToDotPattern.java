@@ -13,7 +13,9 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -58,6 +60,28 @@ public class PageToDotPattern {
 		}
 	}
 	
+	public static void makeDocumentThumbnail(String job_file, String thumbnailFile, int pageNum, int dpi) {
+
+		try {
+			BufferedImage bim;
+
+			PDDocument document = PDDocument.load(new File(job_file));
+			PDFRenderer pdfRenderer = new PDFRenderer(document);	
+			
+			bim = pdfRenderer.renderImageWithDPI(pageNum, dpi, ImageType.RGB);
+			
+			// suffix in filename will be used as the file format
+			ImageIOUtil.writeImage(bim, thumbnailFile, dpi);
+			
+			document.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+	
 	public static void renderPage(PDDocument document, int page) throws IOException  {		
 		
 		PDPage pdPage = document.getPage(page);		
@@ -71,9 +95,10 @@ public class PageToDotPattern {
 			g2d.scale(SCALE, SCALE);
 			g2d.dispose();
 			
-			PDImageXObject pdImage = LosslessFactory.createFromImage(document, renderImage); 
-			PDPageContentStream contentStream = new PDPageContentStream(document, pdPage, true, true);
+			PDImageXObject pdImage = LosslessFactory.createFromImage(document, renderImage); 			
 		
+			PDPageContentStream contentStream = new PDPageContentStream(document, pdPage, true, true);		
+			
 			contentStream.drawImage(pdImage, cropBox.getLowerLeftX(), cropBox.getLowerLeftY(), pdImage.getWidth()/SCALE, pdImage.getHeight()/SCALE);
 			contentStream.close();
 		}
@@ -88,6 +113,7 @@ public class PageToDotPattern {
 
 		PdfStamper stamper = null;
 		PdfReader reader = null;
+		System.out.println(String.format("Add %s dot pattern to %s(source %s) file", paperSize, output_file, doc_file));
 
 		try {	
 			reader = new PdfReader(doc_file);
@@ -95,7 +121,7 @@ public class PageToDotPattern {
 	
 			for (int page = 1; page <= reader.getNumberOfPages(); page++) {
 				
-				log.info(DotPattern.getPath(paperSize, page));
+				//log.info(DotPattern.getPath(paperSize, page));
 				Image coordImage = Image.getInstance(DotPattern.getPath(paperSize, page));
 
 				PdfContentByte canvas = stamper.getOverContent(page);
@@ -107,15 +133,14 @@ public class PageToDotPattern {
 			}
 			
 			stamper.close();
+			reader.close();
+			//log.info(String.format("Done"));
 			
-			log.info(String.format("Done"));
 		}
 		catch (DocumentException e) {
 			;
 		}
-		finally {
-			reader.close();
-		}	
+
 	}
 	
 	final static float DOT_PATTERN_SCALE = 6f;

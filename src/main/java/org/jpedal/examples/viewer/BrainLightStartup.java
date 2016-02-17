@@ -1,6 +1,5 @@
 package org.jpedal.examples.viewer;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ import javafx.scene.layout.VBox;
 /**
  * startup our Viewer as Application and allow user to access Viewer
  */
-public class BrainStartup extends Application {
+public class BrainLightStartup extends Application {
 	private ProgressBar loadProgress;
 	private Label progressText;
 
@@ -61,7 +60,7 @@ public class BrainStartup extends Application {
 
 	private static void checkUserJavaVersion() {
 		if (Float.parseFloat(System.getProperty("java.specification.version")) < 1.8f) 
-			throw new RuntimeException("이 프로그램은 Java 8 버전의 설치가 필요 합니다");
+			throw new RuntimeException("이 프로그램은 Java 1.8 버전의 설치가 필요 합니다");
 		
 	}
 
@@ -69,7 +68,7 @@ public class BrainStartup extends Application {
 	// Initialize the stage for the SplashScreen
 	public void init() {
 		final String imgPath = "/net/bookinaction/viewer/res/bookinaction-splash.png";
-		final String barColour = ("-fx-accent: green;");
+		final String barColour = ("-fx-accent: yellow;");
 		final ImageView splash = new ImageView(getClass().getResource(imgPath).toExternalForm());
 
 		loadProgress = new ProgressBar();
@@ -91,14 +90,14 @@ public class BrainStartup extends Application {
 			@Override
 			protected ObservableList<String> call() throws InterruptedException {
 				final ObservableList<String> loadMods = FXCollections.observableArrayList();
-				final ObservableList<String> friends = FXCollections.observableArrayList("네트워크 모듈", "유저 모둘", "UI",
+				final ObservableList<String> modules = FXCollections.observableArrayList("네트워크 모듈", "유저 모둘", "UI",
 						"유저 콘트롤");
 
 				updateMessage("로딩 . . .");
-				for (int i = 0; i < friends.size(); i++) {
+				for (int i = 0; i < modules.size(); i++) {
 					Thread.sleep(900);
-					updateProgress(i + 1, friends.size());
-					final String nextFriend = friends.get(i);
+					updateProgress(i + 1, modules.size());
+					final String nextFriend = modules.get(i);
 					loadMods.add(nextFriend);
 					updateMessage("로딩 . . .  " + nextFriend);
 				}

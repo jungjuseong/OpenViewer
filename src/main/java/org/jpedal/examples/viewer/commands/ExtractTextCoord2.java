@@ -7,28 +7,17 @@ package org.jpedal.examples.viewer.commands;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-
-import javafx.scene.control.Tooltip;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -37,15 +26,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.jpedal.PdfDecoderInt;
 import org.jpedal.examples.viewer.Values;
 import org.jpedal.examples.viewer.commands.generic.GUIExtractText;
 import org.jpedal.examples.viewer.gui.javafx.dialog.FXDialog;
 import org.jpedal.gui.GUIFactory;
-
-import com.sun.glass.ui.Application;
 
 import net.bookinaction.PageToDotPattern;
 import net.bookinaction.TextInfoExtractor;
@@ -66,8 +52,6 @@ public class ExtractTextCoord2 extends GUIExtractText {
 		}
 	}
 
-	final static StripperParam S_Korean = new StripperParam(7.5f, 1.2f);
-	final static StripperParam S_TOEIC = new StripperParam(3.0f, 2.0f);
 
 	static String sourcePdf;
 	static Stage currentStage;
@@ -84,75 +68,145 @@ public class ExtractTextCoord2 extends GUIExtractText {
 
 	}
 
+	static void showOptionDialog2(final String fileName, Stage stage) throws IOException {
+		
+        Parent root = FXMLLoader.load(ExtractTextCoord2.class.getResource("extract_text.fxml"));
+        
+        optionDialog = new FXDialog(stage, Modality.APPLICATION_MODAL, root, 320, 250);
+        
+        optionDialog.setTitle("텍스트 좌표 추출하기");
+        //stage.setScene(new Scene(root, 320, 120));
+        optionDialog.show();
+	}
+	
 	@SuppressWarnings("rawtypes")
 	static Task worker;
 	
+	static String outputFolder;
 	static String coordFileToSave;
 	static String renderedPdfFile;
+	static String pdfTemp;
+	static String thumbnailFile;
+	
 	static String dotPatternSizeInPaper;
 	
 	static FXDialog optionDialog;
-	static Thread t;
+	static Thread workerThread;
 
-	final static String dotPatternSizes[] = new String[] {"A3", "B4", "A4", "B5"};			
+	final static String dotPatternSizes[] = new String[] {"A3", "B4", "A4", "B5"};	
 	
+	static StripperParam stripperParam;
+	final static StripperParam S_Korean = new StripperParam(7.5f, 1.2f);
+	final static StripperParam S_TOEIC = new StripperParam(3.0f, 2.0f);
+	
+	final static StripperParam[] stripperParams = {
+			S_Korean, S_TOEIC, S_Korean
+	};
+	
+	static boolean testMode = false;
+	
+    final static String DONE = "Done!";
+    final static String CANCELLED = "Cancelled!";
+    
     @FXML private Button extractButton;    
     @FXML private Button closeButton;
     @FXML private ProgressBar progressBar;
     @FXML private Label progressLabel;
-
+    @FXML private Label progressDescription;
+    
+    @FXML private ChoiceBox<String> bookStyle;
+    @FXML private CheckBox testModeCheckbox;
+    
     @FXML 
     protected void handleTextExtract(ActionEvent event) {    	
     	
 		worker = textExtractorWorker();
+		
 		worker.messageProperty().addListener(new ChangeListener<String>() {
 			public void changed(ObservableValue<? extends String> observable, String old, String message) {
 
-				if (message.equals("Done!")) {
+				if (message.equals(DONE)) {
 					optionDialog.close();
 				} else {
-					progressLabel.setText(message);
+					progressDescription.setText(message);
 				}
 			}
 		});
 		
-		coordFileToSave = chooseOutputFile();
-		renderedPdfFile = renameFileExtension(coordFileToSave, ".pdf");
+		File SelectedFile = new File(sourcePdf); 
+		String job_name = SelectedFile.getName().split("\\.")[0];
+		outputFolder = SelectedFile.getParentFile() + "\\" + job_name;
 		
-		extractButton.setDisable(true);
-		//closeButton.setDisable(false);
-        
-		progressBar.setProgress(0);
-		progressBar.progressProperty().unbind();
-		progressBar.progressProperty().bind(worker.progressProperty());
+		System.out.println("sourcePdf:" + sourcePdf);
+		System.out.println("pdf File:" + SelectedFile.getName());
+		System.out.println("job:" + SelectedFile.getName().split("\\.")[0]);
+		System.out.println("output folder:" + outputFolder);
+		
+		File outputFolderFile = new File(outputFolder);
+		boolean success = false;
+		
+		if (!outputFolderFile.exists()) {
+			success = outputFolderFile.mkdirs();
+		}
 
-		Thread t = new Thread(worker);
 		
-		t.start();
+		if (success) {
+			coordFileToSave = outputFolder + "\\" + job_name + "-coord.txt";		
+			renderedPdfFile = outputFolder + "\\" + job_name + "-rendered.pdf"; 
+			thumbnailFile = outputFolder + "\\" + job_name + "-thumbnail.png";
+			
+			pdfTemp = outputFolder + "\\_temp.pdf";
+			
+			extractButton.setDisable(true);
+			//closeButton.setDisable(false);
+	        
+			progressBar.setProgress(0);
+			progressBar.progressProperty().unbind();
+			progressBar.progressProperty().bind(worker.progressProperty());
+	
+			workerThread = new Thread(worker);		
+			workerThread.start();
+		}
     }
-
+    
+    private String chooseDirectory(Stage stage, String initialDirectory) {
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("저장 디렉토리 선택");
+        chooser.setInitialDirectory(new File(initialDirectory));
+        
+        File selectedDirectory = chooser.showDialog(stage);
+        
+        if (selectedDirectory != null)
+          return selectedDirectory.getAbsolutePath();
+               
+        return null;
+    }    
 
     @FXML 
     protected void handleClose(ActionEvent event) throws InterruptedException {   
     	//t.sleep(2000);
-    	worker.cancel(true);
+    	//worker.cancel(true);
     	
 		optionDialog.close();
     }
     
     @FXML 
-    private ComboBox<String> dotPatternSize; // Value injected by FXMLLoader
+    private ChoiceBox<String> dotPatternSize; // Value injected by FXMLLoader
     
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert dotPatternSize != null : "fx:id=\"dotPatternSize\" was not injected: check your FXML file ";
         assert extractButton != null : "fx:id=\"extractButton\" was not injected: check your FXML file";
         assert progressBar != null : "fx:id=\"progressBar\" was not injected: check your FXML file";
+        assert bookStyle != null : "fx:id=\"bookStyle\" was not injected: check your FXML file";
+        assert testModeCheckbox != null : "fx:id=\"testModeCheckbox\" was not injected: check your FXML file";
 
         // Initialize your logic here: all @FXML variables will have been injected
     	dotPatternSize.getItems().clear();
     	dotPatternSize.getItems().addAll("A3","B4","A4","B5");
-		
+    	dotPatternSize.getSelectionModel().select(2); 
+		dotPatternSizeInPaper = dotPatternSize.getValue();
+
     	dotPatternSize.getSelectionModel().selectedIndexProperty().addListener(new 
     			ChangeListener<Number>() {
     				public void changed(ObservableValue ob, Number value, Number newValue) {
@@ -160,118 +214,32 @@ public class ExtractTextCoord2 extends GUIExtractText {
     					System.out.println("dotpattern size: " + dotPatternSizeInPaper);
     				}
     			});
-    	
-        //text.setText("List : ");
-    }
     
-	static void showOptionDialog2(final String fileName, Stage stage) throws IOException {
-		
-        Parent root = FXMLLoader.load(ExtractTextCoord2.class.getResource("extract_text.fxml"));
-        
-        optionDialog = new FXDialog(stage, Modality.APPLICATION_MODAL, root, 320, 150);
-        
-        optionDialog.setTitle("텍스트 좌표 추출하기");
-        //stage.setScene(new Scene(root, 320, 120));
-        optionDialog.show();
-	}
+    
+    	bookStyle.getItems().clear();
+    	bookStyle.getItems().addAll("국어","영어","기타");
+    	bookStyle.getSelectionModel().select(0); 
+    	stripperParam = stripperParams[0];
+
+    	bookStyle.getSelectionModel().selectedIndexProperty().addListener(new 
+    			ChangeListener<Number>() {
+    				public void changed(ObservableValue ob, Number value, Number newValue) {
+    					stripperParam = stripperParams[newValue.intValue()];
+    					System.out.println("bookStyle: " + bookStyle.getValue());
+    				}
+    			});    	
+    }
+
+    @FXML 
+    protected void handleTestModeAction(ActionEvent event) throws InterruptedException {
+    	if (testModeCheckbox.isSelected()) {
+    		testMode = true;
+    	}
+    	else
+    		testMode = false;
+    }
+
 	
-	
-	static void showOptionDialog(final String fileName, Stage stage) {
-
-		final BorderPane border = new BorderPane();
-		final FXDialog optionDialog = new FXDialog(stage, Modality.APPLICATION_MODAL, border, 400, 200);
-		optionDialog.setTitle("텍스트 추출 옵션 - " + fileName);
-
-		final HBox progressBox = new HBox();
-		final Label progressLabel = new Label("진행 ...");
-		final ProgressBar progressBar = new ProgressBar(0);
-
-		progressBox.setSpacing(5);
-		progressBox.setAlignment(Pos.CENTER);
-		progressBox.getChildren().addAll(progressLabel, progressBar);
-		border.setCenter(progressBox);
-
-		// Dot Pattern size
-		final Label choiceLabel = new Label("닷패턴크기: ");
-		
-		final ChoiceBox<String> choiceBox = new ChoiceBox<String>(FXCollections.observableArrayList("A3", "B4", "A4", "B5"));
-		choiceBox.setTooltip(new Tooltip("도트 패턴 크기 고르기"));
-		choiceBox.setValue("A4");
-		
-		choiceBox.getSelectionModel().selectedIndexProperty().addListener(new 
-			ChangeListener<Number>() {
-				public void changed(ObservableValue ob, Number value, Number newValue) {
-					dotPatternSizeInPaper = dotPatternSizes[newValue.intValue()];
-				}
-			});
-		choiceBox.getSelectionModel().select(2);
-		HBox hb = new HBox();
-		hb.getChildren().addAll(choiceLabel, choiceBox);
-		hb.setSpacing(10);
-		hb.setAlignment(Pos.CENTER);
-		hb.setPadding(new Insets(20, 0, 30, 20));
-		
-
-		// Color Chooser
-	    // create a new color chooser sized to the stage.
-
-		// Buttons
-		final HBox bottomButtons = new HBox(15);
-		final Button closeButton = new Button("닫기");
-		closeButton.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
-			@Override
-			public void handle(final javafx.event.ActionEvent e) {
-				optionDialog.close();
-			}
-		});
-
-		final Button extractButton = new Button("추출하기");
-		extractButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(final ActionEvent t) {
-
-				worker = textExtractorWorker();
-				worker.messageProperty().addListener(new ChangeListener<String>() {
-					public void changed(ObservableValue<? extends String> observable, String old, String message) {
-
-						if (message.equals("Done!")) {
-							optionDialog.close();
-						} else {
-							progressLabel.setText(message);
-						}
-					}
-				});
-				
-				coordFileToSave = chooseOutputFile();
-				renderedPdfFile = renameFileExtension(coordFileToSave, ".pdf");
-				
-				extractButton.setDisable(true);
-				closeButton.setDisable(false);
-
-				progressBar.setProgress(0);
-				progressBar.progressProperty().unbind();
-				progressBar.progressProperty().bind(worker.progressProperty());
-
-				new Thread(worker).start();
-
-			}
-		});
-		extractButton.setVisible(true); 
-
-		bottomButtons.setAlignment(Pos.BOTTOM_CENTER);
-		bottomButtons.getChildren().addAll(closeButton, extractButton);
-		
-		final VBox allBottom = new VBox();
-		allBottom.getChildren().addAll(hb, bottomButtons);
-
-		bottomButtons.setPadding(new Insets(0, 5, 10, 0));
-
-		border.setBottom(allBottom);
-		BorderPane.setMargin(bottomButtons, new Insets(10, 10, 10, 10));
-
-		optionDialog.show();
-	}
-
 	@SuppressWarnings("rawtypes")
 	public static Task textExtractorWorker() {
 		return new Task() {
@@ -281,77 +249,94 @@ public class ExtractTextCoord2 extends GUIExtractText {
 				PDDocument document = PDDocument.load(new File(sourcePdf));
 				PrintWriter writer = new PrintWriter(new File(coordFileToSave));
 
+				writer.println(String.format("# source-file: %s", sourcePdf));
+				writer.println(String.format("# dotpattern: %s", dotPatternSizeInPaper));
+				writer.println(String.format("# pages: %d", document.getNumberOfPages()));
+
 				try {
 					for (int page = 1; page <= document.getNumberOfPages(); page++) {
 						
-						TextInfoExtractor.getTextPositionFromPage(document, S_Korean, page, writer);
-						updateMessage(String.format("%d extract", page));
-
-						PageToDotPattern.renderPage(document, page - 1);
-						updateMessage(String.format("%d rendering", page));
-
-						// Now block the thread for a short time, but be sure
-						// to check the interrupted exception for cancellation!
+						TextInfoExtractor.getTextPositionFromPage(document, stripperParam, page, writer, testMode);
+						updateMessage(String.format("Extract %d page", page));
 						
+						// Now block the thread for a short time, but be sure
+						// to check the interrupted exception for cancellation!						
 						try {
-							Thread.sleep(500);
+							Thread.sleep(100);
 						} catch (InterruptedException interrupted) {
 							if (isCancelled()) {
-								updateMessage("Cancelled");
+								updateMessage(CANCELLED);
 								break;
 							}
-						}
+						}	
 						
+						updateProgress(page, document.getNumberOfPages());
+					}
+					writer.close();
+
+					// reset progress bar
+					updateProgress(0, document.getNumberOfPages());
+					updateMessage("Rendering ...");
+
+					for (int page = 0; page < document.getNumberOfPages(); page++) {
+						PageToDotPattern.renderPage(document, page);
+						updateMessage(String.format("Rendering %d page", page+1));
+
+						// Now block the thread for a short time, but be sure
+						// to check the interrupted exception for cancellation!						
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException interrupted) {
+							if (isCancelled()) {
+								updateMessage(CANCELLED);
+								break;
+							}
+						}						
 						//updateMessage(String.format("%d page.", page));
 						updateProgress(page, document.getNumberOfPages());
 					}
+					
+					document.save(pdfTemp); // temporary file
+
 				} 
 				catch (final Exception e1) {
 					e1.printStackTrace();
 				}
-
-				if (writer != null)
-					writer.close();
 				
-				String pdfTemp = renderedPdfFile + "_temp.pdf";
-
-				if (document != null) {
-					document.save(pdfTemp); // temporary file
+				if (document != null) 
 					document.close();
-				}
 				
-				updateMessage(String.format("add dot-pattern ..."));
-
+				
 				// add dot-pattern
-				try {
-					PageToDotPattern.addPatternImage(pdfTemp, renderedPdfFile, dotPatternSizeInPaper);					
-					
-					File pdf = new File(pdfTemp); // remove file
-					pdf.delete();
-					
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				updateMessage("Add dot-pattern ...");
 
-				updateMessage("Done!");
+				PageToDotPattern.addPatternImage(pdfTemp, renderedPdfFile, dotPatternSizeInPaper);					
 
+				PageToDotPattern.makeDocumentThumbnail(sourcePdf, thumbnailFile, 0, 72);
+					 
+				File pdf = new File(pdfTemp); // remove file
+				pdf.delete();
+
+				updateMessage(DONE);
+				
 				return true;
 			}
 
 			@Override
 			protected void succeeded() {
 				super.succeeded();
-				updateMessage("Done!");
+				updateMessage(DONE);
 			}
 
 			@Override
 			protected void cancelled() {
 				super.cancelled();
-				updateMessage("Cancelled!");
+				updateMessage(CANCELLED);
 			}
 		};
 	}
 
+	
 	public static String chooseOutputFile() {
 
 		String fileToSave = null;
@@ -384,7 +369,6 @@ public class ExtractTextCoord2 extends GUIExtractText {
 					fileToSave += ".txt";
 					chosenFile = new File(fileToSave);
 				}
-
 				return fileToSave;
 
 			}

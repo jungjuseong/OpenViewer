@@ -65,8 +65,8 @@ public class ImageLocationListener extends PDFStreamEngine
                 float imageXScale = ctmNew.getScalingFactorX();
                 float imageYScale = ctmNew.getScalingFactorY();
 
-                System.out.println(String.format("%s - [%.1f %.1f %.0f x %.0f]", objectName.getName(),
-                        ctmNew.getTranslateX(), ctmNew.getTranslateY(), imageXScale, imageYScale));
+                //System.out.println(String.format("%s - [%.1f %.1f %.0f x %.0f]", objectName.getName(),
+                //        ctmNew.getTranslateX(), ctmNew.getTranslateY(), imageXScale, imageYScale));
 
                 imageRects.add(new Rectangle2D.Float(ctmNew.getTranslateX(), ctmNew.getTranslateY(), imageXScale, imageYScale));
 

@@ -1378,7 +1378,7 @@ public class BrainGUI extends GUI implements GUIFactory {
 	@Override
 	protected void setViewerIcon() {
 		// Check if file location provided
-		final URL path = guiCursor.getURLForImage("icon.png");
+		final URL path = guiCursor.getURLForImage("bookinaction-icon.png");
 		if (stage != null && path != null) {
 			try {
 				// Converting Swing BufferedImage to FX WritableImage
@@ -3856,7 +3856,7 @@ public class BrainGUI extends GUI implements GUIFactory {
 	@Override
 	protected String getTitle() {
 
-		return "Brain Builder 1.0 ";
+		return "O2O Book Maker 0.6";
 
 	}
 }

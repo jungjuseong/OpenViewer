@@ -81,7 +81,7 @@ public final class TextInfoExtractor {
     	
     }
 
-    public static void getTextPositionFromPage(PDDocument document, StripperParam stripperParam, int pageNum, PrintWriter writer) throws IOException {
+    public static void getTextPositionFromPage(PDDocument document, StripperParam stripperParam, int pageNum, PrintWriter writer, boolean testMode) throws IOException {
         //System.out.println(String.format("getPage: %d", pageNum));
         
         PDPage page = document.getPage(pageNum-1); // pdfbox uses the 0-base index
@@ -120,11 +120,14 @@ public final class TextInfoExtractor {
 
         Stamper s = new Stamper(); // utility class
 
-        // draw the bounding box of each character
-        for (int i = 0; i < stripString.size(); i++) {
-            // original Rectangle
-            s.showBox(canvas, stripString.boundingRect(i), cropBox, Color.GRAY80);
+        if (testMode) {
+	        // draw the bounding box of each character
+	        for (int i = 0; i < stripString.size(); i++) {
+	            // original Rectangle
+	            s.showBox(canvas, stripString.boundingRect(i), cropBox, Color.GRAY80);
+	        }
         }
+        
         s.recordPageSize(writer, pageNum, cropBox);
 
         // splits into lines
@@ -146,10 +149,12 @@ public final class TextInfoExtractor {
 
             stripLines.add(new StripLine(pageNum, lineNum, lineStart, lineEnd, mergedRect));
 
-            System.out.println(String.format("%d-%d: %s - [%.0f %.0f %.0f %.0f]", pageNum, lineNum, sub,
-                    mergedRect.getX(), mergedRect.getY(), mergedRect.getWidth(), mergedRect.getHeight()));
-
-            s.showBox(canvas, mergedRect, cropBox, Color.GREEN);
+            //System.out.println(String.format("%d-%d: %s - [%.0f %.0f %.0f %.0f]", pageNum, lineNum, sub,
+            //        mergedRect.getX(), mergedRect.getY(), mergedRect.getWidth(), mergedRect.getHeight()));
+            if (testMode) {
+            	s.showBox(canvas, mergedRect, cropBox, Color.GREEN);
+            }
+            
             s.recordTextPosition(writer, sub, pageNum, mergedRect, "LINE");
 
             /******* get words in the line *********/
@@ -162,10 +167,13 @@ public final class TextInfoExtractor {
             
             for (Token t : tokens) {
                 mergedRect = stripString.boundingRect(lineStart + t.getStart(), lineStart + t.getEnd() - 1);
-                System.out.println(String.format("%d-%d: %s - [%.0f %.0f %.0f %.0f]", pageNum, lineNum, t.getStem(), mergedRect.getX(), mergedRect.getY(), mergedRect.getWidth(), mergedRect.getHeight()));
+                //System.out.println(String.format("%d-%d: %s - [%.0f %.0f %.0f %.0f]", pageNum, lineNum, t.getStem(), mergedRect.getX(), mergedRect.getY(), mergedRect.getWidth(), mergedRect.getHeight()));
 
                 s.recordTextPosition(writer, t.getStem(), pageNum, mergedRect, "TEXT");
-                s.showBox(canvas, mergedRect, cropBox, Color.RED);
+                
+                if (testMode) {
+                	s.showBox(canvas, mergedRect, cropBox, Color.RED);
+                }
 
             }
 
@@ -180,7 +188,9 @@ public final class TextInfoExtractor {
         for (Rectangle2D imRect : imageRects) {
             //page.getAnnotations().add(annotationMaker.textMarkupAnnotation(Color.YELLOW, (Rectangle2D.Float) imRect, "image"+imageNum));
 
-            s.showBox(canvas, imRect, cropBox, Color.YELLOW);
+        	if (testMode) {
+        		s.showBox(canvas, imRect, cropBox, Color.YELLOW);
+        	}
             s.recordTextPosition(writer, "[image" + imageNum + "]", pageNum, imRect, "IMAGE");
 
             imageNum++;
@@ -201,7 +211,7 @@ public final class TextInfoExtractor {
         //s.recordHeader(writer, source_pdf, document.getNumberOfPages(), sParam);
         
         for (int i = 0; i < document.getNumberOfPages(); i++) {        	
-        	getTextPositionFromPage(document,stripperParam, i+1, writer);            
+        	getTextPositionFromPage(document,stripperParam, i+1, writer, true);            
 
         }
 
